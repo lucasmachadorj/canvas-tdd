@@ -40,4 +40,16 @@ describe('ZoomController execute method', () => {
     expect(zoomOutputDTO.zoom).toBe(0.75);
     expect(zoomOutputDTO.cursorPositionInCanvas).toEqual({ x: 0, y: 0 });
   });
+
+  it('should return zoom as 1.25 and cursorPositionInCanvas as (32, 32) when cursorPointer is in (40, 40) and cursorYOffset is positive', () => {
+    const cursorPointer = {
+      x: 40,
+      y: 40,
+    };
+    const cursorYOffset = 1;
+    const zoomOutputDTO = zoomController.execute(cursorPointer, cursorYOffset);
+
+    expect(zoomOutputDTO.zoom).toBe(1.25);
+    expect(zoomOutputDTO.cursorPositionInCanvas).toEqual({ x: 32, y: 32 });
+  });
 });

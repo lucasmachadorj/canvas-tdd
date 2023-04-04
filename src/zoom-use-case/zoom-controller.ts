@@ -10,9 +10,12 @@ export class ZoomController {
 
   execute(cursorPointer: ScreenPoint, cursorYOffset: number) {
     this.camera.updateZoom(cursorYOffset);
+    const x = cursorPointer.x / this.camera.zoom - this.camera.x;
+    const y = cursorPointer.y / this.camera.zoom - this.camera.y;
+
     return {
       zoom: this.camera.zoom,
-      cursorPositionInCanvas: { x: 0, y: 0 },
+      cursorPositionInCanvas: { x, y },
     };
   }
 }
