@@ -31,9 +31,9 @@ defineFeature(feature, (test) => {
       zoomOutputDTO = zoomController.execute(cursorPointer, cursorYOffset);
     });
     then('the whiteboard should zoom in around the cursor position', () => {
-      const { zoom, canvasPosition } = zoomOutputDTO;
+      const { zoom, cursorPositionInCanvas } = zoomOutputDTO;
       expect(zoom).toBe(1.25);
-      expect(canvasPosition).toEqual({ x: 32, y: 32 });
+      expect(cursorPositionInCanvas).toEqual({ x: 32, y: 32 });
     });
   });
 });

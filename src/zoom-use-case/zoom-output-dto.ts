@@ -1,6 +1,6 @@
 export type ZoomOutputDTO = {
   zoom: number;
-  canvasPosition: {
+  cursorPositionInCanvas: {
     x: number;
     y: number;
   };
