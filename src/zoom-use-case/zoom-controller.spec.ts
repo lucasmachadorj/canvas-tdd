@@ -65,4 +65,18 @@ describe('ZoomController execute method', () => {
     expect(zoomOutputDTO.cursorPositionInCanvas.x).toBeCloseTo(64);
     expect(zoomOutputDTO.cursorPositionInCanvas.y).toBeCloseTo(-66.67);
   });
+
+  it('should return zoom as 1.25 and cursorPositionInCanvas as (22, 22) when cursorPointer is in (40, 40), camera is positioned in (10, 10) and cursorYOffset is positive', () => {
+    fakeCamera.x = 10;
+    fakeCamera.y = 10;
+    const cursorPointer = {
+      x: 40,
+      y: 40,
+    };
+    const cursorYOffset = 1;
+    const zoomOutputDTO = zoomController.execute(cursorPointer, cursorYOffset);
+
+    expect(zoomOutputDTO.zoom).toBe(1.25);
+    expect(zoomOutputDTO.cursorPositionInCanvas).toEqual({ x: 22, y: 22 });
+  });
 });
