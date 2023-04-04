@@ -19,7 +19,7 @@ defineFeature(feature, (test) => {
     zoomController = ZoomController.create(camera);
   });
 
-  test('Zoom in on Mouse Wheel Up', ({ given, when, then }) => {
+  test('Zoom in', ({ given, when, then }) => {
     given('the user is in the whiteboard', () => {
       cursorPointer = {
         x: 40,
@@ -37,7 +37,7 @@ defineFeature(feature, (test) => {
     });
   });
 
-  test('Zoom out on Mouse Wheel Down', ({ given, when, then }) => {
+  test('Zoom out', ({ given, when, then }) => {
     given('the user is in the whiteboard', () => {
       cursorPointer = {
         x: 40,
