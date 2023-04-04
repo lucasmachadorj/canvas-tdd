@@ -23,6 +23,10 @@ export class Camera implements ICamera {
     return this._zoom;
   }
 
+  updateZoom(cursorYOffset: number) {
+    return;
+  }
+
   public static create() {
     return new Camera();
   }
