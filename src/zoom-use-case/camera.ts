@@ -24,7 +24,7 @@ export class Camera implements ICamera {
   }
 
   updateZoom(cursorYOffset: number) {
-    return;
+    this._zoom = 0.75;
   }
 
   public static create() {
