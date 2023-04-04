@@ -5,3 +5,8 @@ Feature: Zoom
     Given the user is in the whiteboard
     When the user scrolls up the mouse wheel
     Then the whiteboard should zoom in around the cursor position
+  
+  Scenario: Zoom out on Mouse Wheel Down
+    Given the user is in the whiteboard
+    When the user scrolls down the mouse wheel
+    Then the whiteboard should zoom out around the cursor position

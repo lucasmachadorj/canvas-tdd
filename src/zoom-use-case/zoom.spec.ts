@@ -36,4 +36,23 @@ defineFeature(feature, (test) => {
       expect(cursorPositionInCanvas).toEqual({ x: 32, y: 32 });
     });
   });
+
+  test('Zoom out on Mouse Wheel Down', ({ given, when, then }) => {
+    given('the user is in the whiteboard', () => {
+      cursorPointer = {
+        x: 40,
+        y: 40,
+      };
+    });
+    when('the user scrolls down the mouse wheel', () => {
+      const cursorYOffset = -1;
+      zoomOutputDTO = zoomController.execute(cursorPointer, cursorYOffset);
+    });
+    then('the whiteboard should zoom out around the cursor position', () => {
+      const { zoom, cursorPositionInCanvas } = zoomOutputDTO;
+      expect(zoom).toBe(0.75);
+      expect(cursorPositionInCanvas.x).toBeCloseTo(53.333);
+      expect(cursorPositionInCanvas.y).toBeCloseTo(53.333);
+    });
+  });
 });
