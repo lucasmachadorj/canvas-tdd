@@ -1,7 +1,6 @@
+import { CanvasPoint } from './canvas-point';
+
 export type ZoomOutputDTO = {
   zoom: number;
-  cursorPositionInCanvas: {
-    x: number;
-    y: number;
-  };
+  cursorPositionInCanvas: CanvasPoint;
 };

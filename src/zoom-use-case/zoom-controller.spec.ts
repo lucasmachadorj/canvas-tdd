@@ -13,6 +13,12 @@ describe('ZoomController execute method', () => {
         fakeCamera.zoom =
           cursorYOffset > 0 ? fakeCamera.zoom * 1.25 : fakeCamera.zoom * 0.75;
       },
+      transformPointFromScreenToCanvas: (screenPoint) => {
+        const x = screenPoint.x / fakeCamera.zoom - fakeCamera.x;
+        const y = screenPoint.y / fakeCamera.zoom - fakeCamera.y;
+
+        return { x, y };
+      },
     };
     zoomController = ZoomController.create(fakeCamera);
   });
