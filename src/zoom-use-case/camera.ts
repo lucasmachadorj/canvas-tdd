@@ -34,8 +34,8 @@ export class Camera implements ICamera {
   }
 
   convertPointFromScreenToCanvas(screenPoint: ScreenPoint): CanvasPoint {
-    const x = screenPoint.x / this.scale - this.positionX;
-    const y = screenPoint.y / this.scale - this.positionY;
+    const x = screenPoint.x / this.scale + this.positionX;
+    const y = screenPoint.y / this.scale + this.positionY;
 
     return { x, y };
   }
