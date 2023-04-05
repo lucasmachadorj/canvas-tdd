@@ -6,24 +6,29 @@ describe('ZoomController execute method', () => {
   let zoomController: ZoomController;
   beforeEach(() => {
     fakeCamera = {
-      x: 0,
-      y: 0,
-      zoom: 1,
-      updateZoom: (cursorYOffset) => {
-        fakeCamera.zoom =
-          cursorYOffset > 0 ? fakeCamera.zoom * 1.25 : fakeCamera.zoom * 0.75;
+      position: { x: 0, y: 0 },
+      scale: 1,
+      updateScale: (cursorYOffset) => {
+        fakeCamera.scale =
+          cursorYOffset > 0 ? fakeCamera.scale * 1.25 : fakeCamera.scale * 0.75;
       },
-      transformPointFromScreenToCanvas: (screenPoint) => {
-        const x = screenPoint.x / fakeCamera.zoom - fakeCamera.x;
-        const y = screenPoint.y / fakeCamera.zoom - fakeCamera.y;
+      convertPointFromScreenToCanvas: (screenPoint) => {
+        const x = screenPoint.x / fakeCamera.scale - fakeCamera.position.x;
+        const y = screenPoint.y / fakeCamera.scale - fakeCamera.position.y;
 
         return { x, y };
+      },
+      getZoom: (canvasPoint) => {
+        return {
+          scale: fakeCamera.scale,
+          fixedPoint: { x: canvasPoint.x, y: canvasPoint.y },
+        };
       },
     };
     zoomController = ZoomController.create(fakeCamera);
   });
 
-  it('should return zoom as 1.25 and cursorPositionInCanvas as (0, 0) when cursorPointer is in screen origin and cursorYOffset is positive', () => {
+  it('should return zoom as 1.25 and fixedPoint as (0, 0) when cursorPointer is in screen origin and cursorYOffset is positive', () => {
     const cursorPointer = {
       x: 0,
       y: 0,
@@ -31,11 +36,11 @@ describe('ZoomController execute method', () => {
     const cursorYOffset = 1;
     const zoomOutputDTO = zoomController.execute(cursorPointer, cursorYOffset);
 
-    expect(zoomOutputDTO.zoom).toBe(1.25);
-    expect(zoomOutputDTO.cursorPositionInCanvas).toEqual({ x: 0, y: 0 });
+    expect(zoomOutputDTO.scale).toBe(1.25);
+    expect(zoomOutputDTO.fixedPoint).toEqual({ x: 0, y: 0 });
   });
 
-  it('should return zoom as 0.75 and cursorPositionInCanvas as (0, 0) when cursorPointer is in screen origin and cursorYOffset is negative', () => {
+  it('should return zoom as 0.75 and fixedPoint as (0, 0) when cursorPointer is in screen origin and cursorYOffset is negative', () => {
     const cursorPointer = {
       x: 0,
       y: 0,
@@ -43,11 +48,11 @@ describe('ZoomController execute method', () => {
     const cursorYOffset = -1;
     const zoomOutputDTO = zoomController.execute(cursorPointer, cursorYOffset);
 
-    expect(zoomOutputDTO.zoom).toBe(0.75);
-    expect(zoomOutputDTO.cursorPositionInCanvas).toEqual({ x: 0, y: 0 });
+    expect(zoomOutputDTO.scale).toBe(0.75);
+    expect(zoomOutputDTO.fixedPoint).toEqual({ x: 0, y: 0 });
   });
 
-  it('should return zoom as 1.25 and cursorPositionInCanvas as (32, 32) when cursorPointer is in (40, 40) and cursorYOffset is positive', () => {
+  it('should return zoom as 1.25 and fixedPoint as (32, 32) when cursorPointer is in (40, 40) and cursorYOffset is positive', () => {
     const cursorPointer = {
       x: 40,
       y: 40,
@@ -55,11 +60,11 @@ describe('ZoomController execute method', () => {
     const cursorYOffset = 1;
     const zoomOutputDTO = zoomController.execute(cursorPointer, cursorYOffset);
 
-    expect(zoomOutputDTO.zoom).toBe(1.25);
-    expect(zoomOutputDTO.cursorPositionInCanvas).toEqual({ x: 32, y: 32 });
+    expect(zoomOutputDTO.scale).toBe(1.25);
+    expect(zoomOutputDTO.fixedPoint).toEqual({ x: 32, y: 32 });
   });
 
-  it('should return zoom as 0.75 and cursorPositionInCanvas as (48, -67) when cursorPointer is in (40, 40) and cursorYOffset is negative', () => {
+  it('should return zoom as 0.75 and fixedPoint as (48, -67) when cursorPointer is in (40, 40) and cursorYOffset is negative', () => {
     const cursorPointer = {
       x: 48,
       y: -50,
@@ -67,14 +72,14 @@ describe('ZoomController execute method', () => {
     const cursorYOffset = -1;
     const zoomOutputDTO = zoomController.execute(cursorPointer, cursorYOffset);
 
-    expect(zoomOutputDTO.zoom).toBe(0.75);
-    expect(zoomOutputDTO.cursorPositionInCanvas.x).toBeCloseTo(64);
-    expect(zoomOutputDTO.cursorPositionInCanvas.y).toBeCloseTo(-66.67);
+    expect(zoomOutputDTO.scale).toBe(0.75);
+    expect(zoomOutputDTO.fixedPoint.x).toBeCloseTo(64);
+    expect(zoomOutputDTO.fixedPoint.y).toBeCloseTo(-66.67);
   });
 
-  it('should return zoom as 1.25 and cursorPositionInCanvas as (22, 22) when cursorPointer is in (40, 40), camera is positioned in (10, 10) and cursorYOffset is positive', () => {
-    fakeCamera.x = 10;
-    fakeCamera.y = 10;
+  it('should return zoom as 1.25 and fixedPoint as (22, 22) when cursorPointer is in (40, 40), camera is positioned in (10, 10) and cursorYOffset is positive', () => {
+    fakeCamera.position.x = 10;
+    fakeCamera.position.y = 10;
     const cursorPointer = {
       x: 40,
       y: 40,
@@ -82,22 +87,22 @@ describe('ZoomController execute method', () => {
     const cursorYOffset = 1;
     const zoomOutputDTO = zoomController.execute(cursorPointer, cursorYOffset);
 
-    expect(zoomOutputDTO.zoom).toBe(1.25);
-    expect(zoomOutputDTO.cursorPositionInCanvas).toEqual({ x: 22, y: 22 });
+    expect(zoomOutputDTO.scale).toBe(1.25);
+    expect(zoomOutputDTO.fixedPoint).toEqual({ x: 22, y: 22 });
   });
 
-  it('should return zoom as 1.5625 and cursorPositionInCanvas as (15.6, 15.6) when cursorPointer is in (40, 40), camera is positioned in (10, 10) and cursorYOffset is positive and initial zoom is 1.25', () => {
-    fakeCamera.zoom = 1.25;
-    fakeCamera.x = 10;
-    fakeCamera.y = 10;
+  it('should return zoom as 1.5625 and fixedPoint as (15.6, 15.6) when cursorPointer is in (40, 40), camera is positioned in (10, 10) and cursorYOffset is positive and initial zoom is 1.25', () => {
+    fakeCamera.scale = 1.25;
+    fakeCamera.position.x = 10;
+    fakeCamera.position.y = 10;
     const cursorPointer = {
       x: 40,
       y: 40,
     };
     const cursorYOffset = 1;
     const zoomOutputDTO = zoomController.execute(cursorPointer, cursorYOffset);
-    expect(zoomOutputDTO.zoom).toBe(1.5625);
-    expect(zoomOutputDTO.cursorPositionInCanvas.x).toBeCloseTo(15.6);
-    expect(zoomOutputDTO.cursorPositionInCanvas.y).toBeCloseTo(15.6);
+    expect(zoomOutputDTO.scale).toBe(1.5625);
+    expect(zoomOutputDTO.fixedPoint.x).toBeCloseTo(15.6);
+    expect(zoomOutputDTO.fixedPoint.y).toBeCloseTo(15.6);
   });
 });

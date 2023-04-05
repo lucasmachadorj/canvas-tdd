@@ -1,6 +1,6 @@
 import { ICamera } from './icamera';
 import { ScreenPoint } from './screen-point';
-import { ZoomOutputDTO } from './zoom-output-dto';
+import { ZoomDTO } from './zoom-dto';
 
 export class ZoomController {
   private constructor(private camera: ICamera) {}
@@ -9,14 +9,11 @@ export class ZoomController {
     return new ZoomController(camera);
   }
 
-  execute(cursorPointer: ScreenPoint, cursorYOffset: number): ZoomOutputDTO {
-    this.camera.updateZoom(cursorYOffset);
-    const { x, y } =
-      this.camera.transformPointFromScreenToCanvas(cursorPointer);
+  execute(cursorPointer: ScreenPoint, cursorYOffset: number): ZoomDTO {
+    this.camera.updateScale(cursorYOffset);
+    const canvasPoint =
+      this.camera.convertPointFromScreenToCanvas(cursorPointer);
 
-    return {
-      zoom: this.camera.zoom,
-      cursorPositionInCanvas: { x, y },
-    };
+    return this.camera.getZoom(canvasPoint);
   }
 }

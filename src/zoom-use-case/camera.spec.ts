@@ -7,13 +7,13 @@ describe('Camera update zoom', () => {
   });
 
   it('should update zoom to 0.75 when cursorYOffset is negative', () => {
-    camera.updateZoom(-1);
-    expect(camera.zoom).toBe(0.75);
+    camera.updateScale(-1);
+    expect(camera.scale).toBe(0.75);
   });
 
   it('should update zoom to 1.25 when cursorYOffset is positive', () => {
-    camera.updateZoom(1);
-    expect(camera.zoom).toBe(1.25);
+    camera.updateScale(1);
+    expect(camera.scale).toBe(1.25);
   });
 });
 
@@ -29,8 +29,8 @@ describe('Camera transform point from screen to canvas', () => {
       y: 0,
     };
 
-    camera.updateZoom(1);
-    const canvasPoint = camera.transformPointFromScreenToCanvas(screenPoint);
+    camera.updateScale(1);
+    const canvasPoint = camera.convertPointFromScreenToCanvas(screenPoint);
     expect(canvasPoint).toEqual({ x: 0, y: 0 });
   });
 
@@ -39,8 +39,8 @@ describe('Camera transform point from screen to canvas', () => {
       x: 40,
       y: 40,
     };
-    camera.updateZoom(1);
-    const canvasPoint = camera.transformPointFromScreenToCanvas(screenPoint);
+    camera.updateScale(1);
+    const canvasPoint = camera.convertPointFromScreenToCanvas(screenPoint);
     expect(canvasPoint).toEqual({ x: 32, y: 32 });
   });
 });

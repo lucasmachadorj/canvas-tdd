@@ -1,10 +1,11 @@
 import { CanvasPoint } from './canvas-point';
 import { ScreenPoint } from './screen-point';
+import { ZoomDTO } from './zoom-dto';
 
 export interface ICamera {
-  x: number;
-  y: number;
-  zoom: number;
-  updateZoom(cursorYOffset: number): void;
-  transformPointFromScreenToCanvas(screenPoint: ScreenPoint): CanvasPoint;
+  position: CanvasPoint;
+  scale: number;
+  updateScale(cursorYOffset: number): void;
+  convertPointFromScreenToCanvas(screenPoint: ScreenPoint): CanvasPoint;
+  getZoom(canvasPoint: CanvasPoint): ZoomDTO;
 }
