@@ -2,15 +2,20 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "lib": ["es6"],
+    "lib": ["es6", "dom"],
     "allowJs": true,
     "outDir": "build",
-    "rootDir": "src",
+    "rootDir": ".",
     "strict": true,
     "esModuleInterop": true,
     "types": ["node", "jest"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/infra/ui/index.tsx", "src/infra/ui/index.tsx"],
   "exclude": ["src/**/*.spec.ts"]
 }
